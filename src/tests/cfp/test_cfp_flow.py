@@ -1,7 +1,7 @@
 import pytest
 from django_scopes import scope
 
-from pretalx.cfp.workflow import i18n_string
+from pretalx.cfp.flow import i18n_string
 
 
 @pytest.mark.parametrize('data,locales,expected', (
@@ -19,8 +19,8 @@ def test_i18n_string(data, locales, expected):
 
 
 @pytest.mark.django_db
-def test_cfp_workflow_saving(event):
+def test_cfp_flow(event):
     with scope(event=event):
-        assert event.settings.cfp_workflow == ''
-        event.cfp_workflow.save()
-        assert event.settings.cfp_workflow != ''
+        assert event.settings.cfp_flow == ''
+        event.cfp_flow.save_config(event.cfp_flow.get_config(None))
+        assert event.settings.cfp_flow == '{"steps": {}}'
